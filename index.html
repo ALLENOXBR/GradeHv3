@@ -34,12 +34,10 @@
 
         .font-digital { font-family: 'JetBrains Mono', monospace; }
 
-        /* Scrollbar Personalizada */
         .custom-scroll::-webkit-scrollbar { height: 6px; width: 6px; }
         .custom-scroll::-webkit-scrollbar-track { background: transparent; }
         .custom-scroll::-webkit-scrollbar-thumb { background: #FACC15; border-radius: 10px; }
 
-        /* Alternância entre Mobile e Desktop */
         .mobile-grid { display: block; }
         .desktop-table { display: none; }
 
@@ -48,9 +46,13 @@
             .desktop-table { display: table; }
         }
 
-        /* Regras de Impressão PDF */
+        /* CORREÇÃO PARA PDF - GARANTE PÁGINA ÚNICA */
         .is-generating-pdf .mobile-grid { display: none !important; }
-        .is-generating-pdf .desktop-table { display: table !important; width: 1050px !important; margin: 0 !important; }
+        .is-generating-pdf .desktop-table { 
+            display: table !important; 
+            width: 1050px !important; 
+            margin: 0 !important; 
+        }
         .is-generating-pdf .no-pdf { display: none !important; }
         .is-generating-pdf #exportArea { 
             width: 1050px !important; 
@@ -58,6 +60,12 @@
             padding: 0 !important;
             border-radius: 0 !important;
             box-shadow: none !important;
+            border: none !important;
+        }
+        /* Ajuste fino para evitar quebras de texto no PDF */
+        .is-generating-pdf input.editable-input {
+            border: none !important;
+            background: transparent !important;
         }
 
         .editable-input {
@@ -97,12 +105,8 @@
             font-weight: 800;
         }
 
-        /* Estados de Destaque */
         .current-row { background-color: rgba(250, 204, 21, 0.05) !important; }
-        
-        .current-day-col {
-            background-color: rgba(34, 197, 94, 0.03) !important;
-        }
+        .current-day-col { background-color: rgba(34, 197, 94, 0.03) !important; position: relative; }
 
         .day-marker {
             position: absolute;
@@ -148,17 +152,14 @@
 </head>
 <body class="bg-slate-50 dark:bg-darkBg text-slate-900 dark:text-slate-100 transition-colors duration-300 min-h-screen flex flex-col overflow-x-hidden">
 
-    <!-- Loader de PDF -->
     <div id="pdfLoader">
         <div class="animate-spin rounded-full h-12 w-12 border-4 border-primary border-t-transparent mb-4"></div>
-        <p class="text-lg">Gerando Documento...</p>
+        <p class="text-lg">Gerando Página Única...</p>
     </div>
 
-    <!-- Navegação Responsiva -->
     <nav class="sticky top-0 z-[100] bg-white/90 dark:bg-darkCard/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-700 no-print w-full">
         <div class="max-w-7xl mx-auto px-2 sm:px-4 h-16 flex items-center justify-between gap-2">
             
-            <!-- Logo e Monitor -->
             <div class="flex items-center gap-2 sm:gap-4 overflow-hidden">
                 <div class="flex items-center gap-1.5 shrink-0">
                     <div class="bg-primary p-1.5 rounded-lg shadow-md">
@@ -167,7 +168,6 @@
                     <span class="font-extrabold text-xs sm:text-base tracking-tight hidden xs:inline">Grade<span class="text-amber-600 dark:text-yellow-500">Master</span></span>
                 </div>
                 
-                <!-- Monitor Digital Responsivo -->
                 <div class="flex items-center bg-amber-500 px-2 py-1.5 rounded-lg sm:rounded-xl shadow-md border-none overflow-hidden shrink min-w-0">
                     <div class="flex items-center gap-1.5 sm:gap-2 border-r border-amber-600/30 pr-2 sm:pr-3 mr-2 sm:mr-3 shrink-0">
                         <span id="liveClock" class="font-black text-slate-900 text-[10px] sm:text-sm tracking-tighter tabular-nums">00:00:00</span>
@@ -177,7 +177,6 @@
                 </div>
             </div>
 
-            <!-- Ações -->
             <div class="flex items-center gap-1 sm:gap-2 shrink-0">
                 <button id="themeToggle" class="p-1.5 sm:p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
                     <svg id="sunIcon" class="hidden dark:block w-4 h-4 text-yellow-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
@@ -197,7 +196,6 @@
         <main id="mainContainer" class="w-full max-w-[1100px]">
             <div id="exportArea" class="bg-white dark:bg-darkCard rounded-xl sm:rounded-2xl shadow-xl sm:shadow-2xl overflow-hidden border border-slate-200 dark:border-slate-700">
                 
-                <!-- Cabeçalho Principal -->
                 <header class="p-4 sm:p-8 border-b-4 border-primary bg-slate-50/50 dark:bg-slate-800/30 flex flex-col md:flex-row gap-4 sm:gap-8 items-center md:items-center">
                     <div class="w-16 h-16 sm:w-24 sm:h-24 bg-primary rounded-xl sm:rounded-2xl flex items-center justify-center shadow-lg shrink-0">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 sm:w-12 text-slate-900" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M8 7h6"/><path d="M8 11h8"/></svg>
@@ -229,7 +227,6 @@
                     </div>
                 </header>
 
-                <!-- Barra de Status e Horários Responsiva -->
                 <div class="px-4 py-4 bg-slate-100 dark:bg-slate-900/50 border-b border-slate-200 dark:border-slate-700">
                     <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
                         <div class="flex gap-4 sm:gap-8 font-black text-[9px] sm:text-xs uppercase text-amber-700 dark:text-yellow-500">
@@ -243,7 +240,6 @@
                             </div>
                         </div>
                         
-                        <!-- Badges de Horário com Grelha em Mobile -->
                         <div class="grid grid-cols-2 sm:flex sm:flex-wrap gap-2 w-full sm:w-auto items-center">
                             <div class="text-[9px] sm:text-[10px] font-bold bg-white dark:bg-slate-800 px-2 sm:px-3 py-1.5 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 flex items-center justify-center gap-2">
                                 <span class="opacity-50 text-slate-400">INÍCIO</span>
@@ -259,7 +255,6 @@
                         </div>
                     </div>
 
-                    <!-- Progresso -->
                     <div class="w-full mt-4 no-pdf">
                         <div class="flex justify-between items-center mb-1 text-[8px] sm:text-[9px] font-black uppercase tracking-widest text-slate-400">
                             <span>Jornada Escolar</span>
@@ -273,10 +268,8 @@
                     </div>
                 </div>
 
-                <!-- Grelha Móvel (Visível < 1025px) -->
                 <div id="mobileSchedule" class="mobile-grid p-3 sm:p-4 space-y-6 bg-slate-50 dark:bg-slate-900/10"></div>
 
-                <!-- Tabela Desktop (Visível >= 1025px) -->
                 <div class="desktop-table w-full overflow-x-auto custom-scroll">
                     <table class="w-full border-collapse">
                         <thead>
@@ -308,7 +301,6 @@
                     </table>
                 </div>
 
-                <!-- Rodapé -->
                 <footer class="p-5 sm:p-6 bg-slate-50 dark:bg-slate-900/40 border-t border-slate-200 dark:border-slate-700">
                     <div class="flex flex-col md:flex-row justify-between items-center gap-6">
                         <div class="text-center md:text-left">
@@ -370,14 +362,12 @@
         function updateLiveClock() {
             const now = new Date();
             const timeStr = now.toLocaleTimeString('pt-BR');
-            
             const dayNum = now.getDate().toString().padStart(2, '0');
             const monthNum = (now.getMonth() + 1).toString().padStart(2, '0');
             const yearNum = now.getFullYear();
             const rawDay = now.getDay(); 
             const weekDayIdx = rawDay === 0 ? 6 : rawDay - 1; 
             const weekDayName = days[weekDayIdx] || 'Fim de Semana';
-            
             const dateStr = `${dayNum}/${monthNum}/${yearNum} • ${weekDayName}`;
             
             const liveClock = document.getElementById('liveClock');
@@ -385,7 +375,6 @@
             if(liveClock) liveClock.textContent = timeStr;
             if(liveDate) liveDate.textContent = dateStr;
 
-            const currentDay = rawDay; 
             const currentMinutes = now.getHours() * 60 + now.getMinutes();
             const statusDot = document.getElementById('schoolStatus');
             
@@ -398,29 +387,27 @@
                 if (currentMinutes >= startMins && currentMinutes < endMins) currentIdx = idx;
             });
 
-            // Limpeza de estilos
             document.querySelectorAll('.current-row').forEach(el => el.classList.remove('current-row'));
             document.querySelectorAll('.current-day-col').forEach(el => el.classList.remove('current-day-col'));
             document.querySelectorAll('.active-cell').forEach(el => el.classList.remove('active-cell'));
             document.querySelectorAll('.current-card').forEach(el => el.classList.remove('current-card'));
             document.querySelectorAll('.active-day').forEach(el => el.classList.remove('active-day'));
 
-            const isSchoolDay = currentDay >= 1 && currentDay <= 5;
+            const isSchoolDay = rawDay >= 1 && rawDay <= 5;
             
             if (isSchoolDay) {
-                // Ativar marcador verde
-                document.querySelectorAll(`th[data-day-index="${currentDay}"]`).forEach(el => el.classList.add('active-day'));
-                document.querySelectorAll(`#mobile-day-sec-${currentDay}`).forEach(el => el.classList.add('active-day'));
+                document.querySelectorAll(`th[data-day-index="${rawDay}"]`).forEach(el => el.classList.add('active-day'));
+                document.querySelectorAll(`#mobile-day-sec-${rawDay}`).forEach(el => el.classList.add('active-day'));
 
                 if (currentIdx !== -1) {
                     statusDot.className = 'w-2.5 h-2.5 rounded-full bg-green-600 shadow-sm pulse';
                     document.querySelectorAll(`[data-row-index="${currentIdx}"]`).forEach(el => el.classList.add('current-row'));
-                    document.querySelectorAll(`[data-day-index="${currentDay}"]`).forEach(el => el.classList.add('current-day-col'));
-                    document.querySelectorAll(`[data-cell-id="r${currentIdx}d${currentDay}"]`).forEach(el => el.classList.add('active-cell'));
-                    document.querySelectorAll(`[data-card-day-index="${currentDay}"][data-card-row-index="${currentIdx}"]`).forEach(el => el.classList.add('current-card'));
+                    document.querySelectorAll(`[data-day-index="${rawDay}"]`).forEach(el => el.classList.add('current-day-col'));
+                    document.querySelectorAll(`[data-cell-id="r${currentIdx}d${rawDay}"]`).forEach(el => el.classList.add('active-cell'));
+                    document.querySelectorAll(`[data-card-day-index="${rawDay}"][data-card-row-index="${currentIdx}"]`).forEach(el => el.classList.add('current-card'));
                 } else {
                     statusDot.className = 'w-2.5 h-2.5 rounded-full bg-red-600 shadow-sm';
-                    document.querySelectorAll(`[data-day-index="${currentDay}"]`).forEach(el => el.classList.add('current-day-col'));
+                    document.querySelectorAll(`[data-day-index="${rawDay}"]`).forEach(el => el.classList.add('current-day-col'));
                 }
             } else {
                 statusDot.className = 'w-2.5 h-2.5 rounded-full bg-red-600 shadow-sm';
@@ -607,7 +594,6 @@
                     const key = input.getAttribute('data-key');
                     if (data[key]) {
                         input.value = data[key];
-                        // Sincronizar todos os campos com a mesma chave
                         document.querySelectorAll(`[data-key="${key}"]`).forEach(el => el.value = data[key]);
                     }
                 });
@@ -645,16 +631,26 @@
             loader.style.display = 'flex';
             document.body.classList.add('is-generating-pdf');
 
+            // OPÇÕES REFINADAS PARA PÁGINA ÚNICA
             const opt = {
-                margin: [10, 10, 10, 10],
+                margin: 0,
                 filename: `Grade_${schoolName.substring(0,25).replace(/ /g, '_')}.pdf`,
                 image: { type: 'jpeg', quality: 1.0 },
-                html2canvas: { scale: 2, useCORS: true, logging: false, windowWidth: 1100 },
-                jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' }
+                html2canvas: { 
+                    scale: 2, 
+                    useCORS: true, 
+                    logging: false, 
+                    windowWidth: 1100,
+                    scrollY: 0,
+                    scrollX: 0
+                },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' },
+                pagebreak: { mode: 'avoid-all' } // IMPEDE QUEBRAS DE PÁGINA
             };
 
             try {
-                await new Promise(r => setTimeout(r, 400));
+                // Aguarda renderização do DOM simulado antes de capturar
+                await new Promise(r => setTimeout(r, 500));
                 await html2pdf().set(opt).from(element).save();
             } finally {
                 document.body.classList.remove('is-generating-pdf');
